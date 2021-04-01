@@ -187,3 +187,15 @@ func TestSimplify(t *testing.T) {
 
 	compareTest(t, input, expected, Options{Simplify: true})
 }
+
+func TestEndOfFileExpr(t *testing.T) {
+	input := `inputs = merge(
+		{},
+		foo().inputs
+	)`
+	expected := `{
+	"inputs": "${merge(\n\t\t{},\n\t\tfoo().inputs\n\t)}"
+}`
+
+	compareTest(t, input, expected, Options{})
+}
