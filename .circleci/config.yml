@@ -13,6 +13,7 @@ jobs:
       - checkout
       - prodsec/security_scans:
           mode: auto
+          iac-scan: disabled
 
 workflows:
   version: 2
@@ -20,9 +21,15 @@ workflows:
     jobs:
       - prodsec/secrets-scan:
           name: Scan repository for secrets
+          trusted-branch: main
           context:
             - snyk-bot-slack
           channel: group-infrastructure-as-code-alerts
+          filters:
+            branches:
+              ignore:
+                - main
+
       - security-scans:
           name: "Security Scans"
           context:
